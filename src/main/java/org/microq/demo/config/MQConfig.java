@@ -13,12 +13,12 @@ public class MQConfig {
 
     @Bean
     public Interchange interchange(){
-        return new TestInterchange();
+        return new Interchange("my-interchange");
     }
 
     @Bean
     public Sequence sequence(){
-        return new TestSequence();
+        return new Sequence("my-sequence");
     }
 
     @Bean
@@ -26,7 +26,24 @@ public class MQConfig {
         return Chaining.builder()
                 .chain(sequence())
                 .to(interchange())
-                .withPath("default-to-default")
+                .withPath("my-inter-to-my-seq")
+                .build();
+    }
+
+    @Bean
+    public Interchange testInterchange(){
+        return new Interchange("default");
+    }
+    @Bean
+    public Sequence testSequence(){
+        return new Sequence("default");
+    }
+    @Bean
+    public Chaining testChaining(){
+        return Chaining.builder()
+                .chain(testSequence())
+                .to(testInterchange())
+                .withPath("test-to-test")
                 .build();
     }
 }
